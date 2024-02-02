@@ -10,8 +10,12 @@ public class Project_Reuest_cls {
 
         for (Project_Request__c Project_Data : ProjectRequest) 
         {
+            //send_Mail.setTemplateId(param0);
+            //send_Mail.setTargetObjectId(param0);
             send_Mail.setToAddresses(new String[] {email_data.Email__c});
             send_Mail.setSubject('param0');
+            //send_Mail.setSaveAsActivity();
+            //send_Mail.setUseSignature(param0);
             mailsent.add(send_Mail);
         }
 
