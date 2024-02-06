@@ -22,4 +22,26 @@ public class Project_Reuest_cls
         Messaging.sendEmail(mailsent); // Mail sent statement
     }
 
+    public static void accessRule(List<Project_and_user_association__c> projectUserData)
+    {
+        List<Project__share> shareREcords = new List<Project__share>();
+
+        for(Project_and_user_association__c record : projectUserData)
+        {
+            Project__share newShare= new Project__share();
+            newShare.ParentId = record.Project__c;
+            newShare.UserOrGroupId = record.User__c;
+            newShare.AccessLevel = record.Status__c;
+            newShare.RowCause = Schema.Project__share.RowCause.Manual;
+            shareREcords.add(newShare);
+        }
+        insert shareREcords;
+    }
+
 }
+
+
+
+
+
+
