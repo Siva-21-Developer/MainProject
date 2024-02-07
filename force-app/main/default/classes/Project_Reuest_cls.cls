@@ -31,16 +31,24 @@ public class Project_Reuest_cls
             Project__share newShare= new Project__share();
             newShare.ParentId = record.Project__c;
             newShare.UserOrGroupId = record.User__c;
-            newShare.AccessLevel = 'Read';
+            newShare.AccessLevel = record.Status__c;
             newShare.RowCause = Schema.Project__share.RowCause.Manual;
             shareREcords.add(newShare);
         }
         insert shareREcords;
     }
 
-    public static void accRuleUpdate(List<Project_and_user_association__c> projectUserData)
+    public static void accRuleUpdate(List<Project_and_user_association__c> projectUserData, Map<Id,Project_and_user_association__c> oldData)
     {
-        
+        for(Project_and_user_association__c userupdata : projectUserData )
+        {
+            
+
+            if(userupdata.Project__c == oldData.get(userupdata.id).Project__c && userupdata.User__c == oldData.get(userupdata.id).User__c)
+            {
+                
+            }
+        }
     }
 
 }
