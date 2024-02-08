@@ -40,21 +40,49 @@ public class Project_Reuest_cls
 
     public static void accRuleUpdate(List<Project_and_user_association__c> projectUserData, Map<Id,Project_and_user_association__c> oldData)
     {
+
+        Set<Id> parent_id = new Set<id>();
+        Set<Id> user_id = new Set<id>();
+
         for(Project_and_user_association__c userupdata : projectUserData )
         {
+            parent_id.add(userupdata.Project__c);
+            user_id.add(userupdata.User__c);
+        }
+
+        list<project__share> share_rull = [select id, ParentId, UserOrGroupId, AccessLevel, RowCause from project__share WHERE ParentId In: parent_id AND UserOrGroupId In :user_id];
+
+        for (project__share retData : share_rull) 
+        {
+
             
 
-            if(userupdata.Project__c == oldData.get(userupdata.id).Project__c && userupdata.User__c == oldData.get(userupdata.id).User__c)
-            {
-                
-            }
         }
+
+    }
+
+    public static void maxString()
+    {
+        List<String> minmax = new List<String>{'helloworld', 'welcome', 'way', 'enter','maximumnumber', 'asusvivobookflip'};
+        String maxString = minmax[0];
+        String minString = minmax[0];
+        for (String str : minmax) {
+			if(str.length() > maxString.length())
+            {
+                maxString = str;
+            }
+            
+            if(str.length() < minString.length())
+            {
+                minString = str;
+			}
+        }
+        
+        
+        System.debug('Maximum String: ' + maxString +' : '+ maxString.length());
+        System.debug('Minimum String: ' + minString+' : '+minString.length());
+        
+
     }
 
 }
-
-
-
-
-
-
