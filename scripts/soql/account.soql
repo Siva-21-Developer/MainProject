@@ -3,4 +3,6 @@
 //     query text and running the command:
 //     SFDX: Execute SOQL Query with Currently Selected Text
 
-SELECT Id, Name FROM Account
+SELECT Id, accesslevel, ParentId, RowCause, UserOrGroupId
+  FROM Project__Share
+  WHERE ParentId = 'a01F900001RPgcFIAT' AND UserOrGroupId = '005F9000008P4tlIAC'

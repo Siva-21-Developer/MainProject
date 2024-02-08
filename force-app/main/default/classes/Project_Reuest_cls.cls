@@ -38,7 +38,13 @@ public class Project_Reuest_cls
         insert shareREcords;
     }
 
-    public static void accRuleUpdate(List<Project_and_user_association__c> projectUserData, Map<Id,Project_and_user_association__c> oldData)
+    public static String strValueOf(Id convertValue)
+    {
+        return String.valueOf(convertValue);
+           
+    }
+
+    public static void accRuleUpdate(List<Project_and_user_association__c> projectUserData)
     {
 
         Set<Id> parent_id = new Set<id>();
@@ -50,14 +56,11 @@ public class Project_Reuest_cls
             user_id.add(userupdata.User__c);
         }
 
-        list<project__share> share_rull = [select id, ParentId, UserOrGroupId, AccessLevel, RowCause from project__share WHERE ParentId In: parent_id AND UserOrGroupId In :user_id];
 
-        for (project__share retData : share_rull) 
-        {
+        list<project__share> share_rull = [SELECT Id, accesslevel, ParentId, RowCause, UserOrGroupId
+        FROM Project__Share
+        WHERE ParentId =: parent_id AND UserOrGroupId =: user_id];
 
-            
-
-        }
 
     }
 

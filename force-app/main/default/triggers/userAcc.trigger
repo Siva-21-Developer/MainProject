@@ -7,7 +7,7 @@ trigger userAcc on Project_and_user_association__c (before insert, After insert)
 
     if(Trigger.isBefore && Trigger.isUpdate)
     {
-        Project_Reuest_cls.accRuleUpdate(Trigger.new,Trigger.oldMap);
+        Project_Reuest_cls.accRuleUpdate(Trigger.new);
     }
 
 }
