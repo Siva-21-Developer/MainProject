@@ -1,6 +1,6 @@
 public class Project_Reuest_cls 
 {
-    public static void main(List<Project_Request__c> ProjectRequest)
+    public static void main(List<Project_Request__c> ProjectRequest) // this method for email sent ..........
     {
         Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage(); // Create Mail Object.
         projectsendmail__c email_data = projectsendmail__c.getInstance(); // Get Sales Admin email from custome settings.
@@ -22,27 +22,26 @@ public class Project_Reuest_cls
         Messaging.sendEmail(mailsent); // Mail sent statement
     }
 
-    public static void accessRule(List<Project_and_user_association__c> projectUserData)
+    public static void accessRule(List<Project_and_user_association__c> projectUserData) // this method for user access for project........
     {
-        List<Project__share> shareRecords = new List<Project__share>();
+        List<Project__share> shareRecords = new List<Project__share>(); // store the sharing access users ...
     
-        for(Project_and_user_association__c record : projectUserData)
+        for(Project_and_user_association__c record : projectUserData) // project and user association recrod ...
         {
-            Project__share newShare = new Project__share();
-            newShare.ParentId = record.Project__c;
-            newShare.UserOrGroupId = record.User__c;
-            newShare.AccessLevel = record.Status__c;
-            newShare.RowCause = Schema.Project__share.RowCause.Manual;
-            shareRecords.add(newShare);
+            Project__share newShare = new Project__share();  // create a share object for project
+            newShare.ParentId = record.Project__c;  // parent record (which Project)
+            newShare.UserOrGroupId = record.User__c;  // User record (which user)
+            newShare.AccessLevel = record.Status__c;  // Read or Write
+            newShare.RowCause = Schema.Project__share.RowCause.Manual;  // 
+            shareRecords.add(newShare);  // add the share access to List
         }
-        insert shareRecords;
+        insert shareRecords;  // insert access -----
     }
     
 
-    public static String strValueOf(Id convertValue)
+    public static String strValueOf(Id convertValue) // this method use for convert id to string.....
     {
-        return String.valueOf(convertValue);
-           
+        return String.valueOf(convertValue);   // value of method ---          
     }
 
     public static void accRuleUpdate(List<Project_and_user_association__c> projectUserData)
@@ -93,53 +92,4 @@ public class Project_Reuest_cls
         System.debug('Minimum String: ' + minString+' : '+minString.length());
         
     }
-
-    
-   public static boolean manualShareRead(List<Project_and_user_association__c> projectUserData){
-    // Create new sharing object for the custom object Job.
-    Project__Share jobShr  = new Project__Share();
- 
-    // Set the ID of record being shared.
-    jobShr.ParentId = projectUserData[0].Project__c;
-      
-    // Set the ID of user or group being granted access.
-    jobShr.UserOrGroupId = projectUserData[0].User__c;
-      
-    // Set the access level.
-    jobShr.AccessLevel = projectUserData[0].Status__c;
-      
-    // Set rowCause to 'manual' for manual sharing.
-    // This line can be omitted as 'manual' is the default value for sharing objects.
-    jobShr.RowCause = Schema.Project__Share.RowCause.Manual;
-      
-    // Insert the sharing record and capture the save result. 
-    // The false parameter allows for partial processing if multiple records passed 
-    // into the operation.
-    Database.SaveResult sr = Database.insert(jobShr,false);
-
-    // Process the save results.
-    if(sr.isSuccess()){
-       // Indicates success
-       return true;
-    }
-    else {
-       // Get first save result error.
-       Database.Error err = sr.getErrors()[0];
-       
-       // Check if the error is related to trival access level.
-       // Access level must be more permissive than the object's default.
-       // These sharing records are not required and thus an insert exception is acceptable. 
-       if(err.getStatusCode() == StatusCode.FIELD_FILTER_VALIDATION_EXCEPTION  &&  
-                err.getMessage().contains('AccessLevel')){
-          // Indicates success.
-          return true;
-       }
-       else{
-          // Indicates failure.
-          return false;
-       }
-     }
- }
-
-
 }
