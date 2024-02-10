@@ -44,6 +44,7 @@ public class Project_Reuest_cls
         return String.valueOf(convertValue);   // value of method ---          
     }
 
+    
     public static void accRuleUpdate(List<Project_and_user_association__c> projectUserData)
     {
 
@@ -63,10 +64,13 @@ public class Project_Reuest_cls
 
         for(Project_and_user_association__c newData : projectUserData)
         {
-            Project__Share updateData = new Project__Share();
-            updateData.Id = share_rull[0].Id;
-            updateData.AccessLevel = newData.Status__c;
-            update updateData;
+            for(Project__share data : share_rull)
+            {
+                Project__Share updateData = new Project__Share();
+                updateData.Id = data.Id;
+                updateData.AccessLevel = newData.Status__c;
+                update updateData;
+            }
         }
 
     }

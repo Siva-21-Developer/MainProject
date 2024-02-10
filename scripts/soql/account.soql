@@ -5,4 +5,3 @@
 
 SELECT AccessLevel, Id, IsDeleted, LastModifiedById, LastModifiedDate, ParentId, RowCause, UserOrGroupId
   FROM Project__Share
-  WHERE ParentId = 'a01F900001RQBt5IAH'
