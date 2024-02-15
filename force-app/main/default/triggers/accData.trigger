@@ -1,4 +1,4 @@
-trigger accData on Account (before insert) 
+trigger accData on Account (before insert, before update) 
 {
 
     if(Trigger.isAfter && Trigger.isInsert)
@@ -6,9 +6,9 @@ trigger accData on Account (before insert)
         
     }
 
-    if(Trigger.isBefore && Trigger.isInsert)
+    if(Trigger.isBefore && Trigger.isUpdate)
     {
-        
+        acc_data.account_update(trigger.new);
     }
 
 }

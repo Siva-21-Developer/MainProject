@@ -1,5 +1,6 @@
 public class Project_Reuest_cls 
 {
+
     public static void main(List<Project_Request__c> ProjectRequest) // this method for email sent ..........
     {
         Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage(); // Create Mail Object.
@@ -26,6 +27,8 @@ public class Project_Reuest_cls
     {
         List<Project__share> shareRecords = new List<Project__share>(); // store the sharing access users ...
     
+        Set<Id> project_id = new Set<Id>();
+
         for(Project_and_user_association__c record : projectUserData) // project and user association recrod ...
         {
             Project__share newShare = new Project__share();  // create a share object for project
@@ -34,47 +37,100 @@ public class Project_Reuest_cls
             newShare.AccessLevel = record.Status__c;  // Read or Write
             newShare.RowCause = Schema.Project__share.RowCause.Manual;  // 
             shareRecords.add(newShare);  // add the share access to List
+            project_id.add(record.Project__c);
         }
         insert shareRecords;  // insert access -----
-    }
-    
 
-    public static String strValueOf(Id convertValue) // this method use for convert id to string.....
-    {
-        return String.valueOf(convertValue);   // value of method ---          
+
     }
 
-    
-    public static void accRuleUpdate(List<Project_and_user_association__c> projectUserData)
+
+    public static void workAcc(List<Project_and_user_association__c> ProjectData)
     {
-
-        Set<Id> parent_id = new Set<id>();
-        Set<Id> user_id = new Set<id>();
-
-        for(Project_and_user_association__c userupdata : projectUserData )
+        Map<Id,Project_and_user_association__c> project_ids = new Map<Id,Project_and_user_association__c>();
+        for(Project_and_user_association__c data : ProjectData)
         {
-            parent_id.add(userupdata.Project__c);
-            user_id.add(userupdata.User__c);
+            project_ids.put(data.Project__c, data);
         }
 
+        List<Work_Orders__c> workorderData = [select id from Work_Orders__c WHERE Project__c=:project_ids.keyset()];
+       
+        List<Work_Orders__Share> insertWorkData = new List<Work_Orders__Share>();
 
-        list<project__share> share_rull = [SELECT Id, accesslevel, ParentId, RowCause, UserOrGroupId
-        FROM Project__Share
-        WHERE ParentId =: parent_id AND UserOrGroupId =: user_id];
-
-        for(Project_and_user_association__c newData : projectUserData)
+        for (Project_and_user_association__c variable : ProjectData) 
         {
-            for(Project__share data : share_rull)
+            for (Work_Orders__c orderdata : workorderData) 
             {
-                Project__Share updateData = new Project__Share();
-                updateData.Id = data.Id;
-                updateData.AccessLevel = newData.Status__c;
-                update updateData;
+                    Work_Orders__Share Data = new Work_Orders__Share();
+                    Data.ParentId = orderdata.Id;
+                    Data.UserOrGroupId = variable.User__c;
+                    Data.AccessLevel = variable.Status__c;
+                    Data.RowCause = Schema.Work_Orders__Share.RowCause.Manual;
+                    insertWorkData.add(Data);
+            }    
+        }
+
+        insert insertWorkData;
+        
+    }
+
+
+
+    
+
+    public static List<Project__Share> returnData(List<Project_and_user_association__c> updateData)
+    {
+        Map<id,id> shareData =new Map<id, id>();
+        
+        for(Project_and_user_association__c retData : updateData) 
+        {
+            shareData.put(retData.Project__c,retData.User__c);
+        }
+
+        List<Project__Share> share_Data = [SELECT AccessLevel, Id, ParentId, RowCause, UserOrGroupId FROM Project__Share WHERE ParentId =:shareData.keyset() and UserOrGroupId =: shareData.values()]; 
+
+        return share_Data;
+    }
+
+
+
+    public static void accUpdate(List<Project_and_user_association__c> updateData)
+    {
+
+        List<Project__Share> Dataupdate = new List<Project__Share>();
+
+        for (Project__share variable : returnData(updateData)) 
+        {
+            for (Project_and_user_association__c newvalue : updateData) {
+                Project__Share newDataUpdate = new Project__Share();
+                newDataUpdate.Id = variable.Id;
+                newDataUpdate.AccessLevel = newvalue.Status__c;
+                Dataupdate.add(newDataUpdate);
             }
         }
 
+        Update Dataupdate;
     }
 
+
+    public static void accDelete(List<Project_and_user_association__c> updateData)
+    {
+
+        List<Project__Share> Dataupdate = new List<Project__Share>();
+
+        for (Project__share variable : returnData(updateData)) 
+        {
+            for (Project_and_user_association__c newvalue : updateData) {
+                Project__Share newDataUpdate = new Project__Share();
+                newDataUpdate.Id = variable.Id;
+                Dataupdate.add(newDataUpdate);
+            }
+        }
+
+        Delete Dataupdate;
+    }
+
+    
     public static void maxString()
     {
         List<String> minmax = new List<String>{'helloworld', 'welcome', 'way', 'enter','maximumnumber', 'asusvivobookflip'};
@@ -96,4 +152,6 @@ public class Project_Reuest_cls
         System.debug('Minimum String: ' + minString+' : '+minString.length());
         
     }
+
+
 }
