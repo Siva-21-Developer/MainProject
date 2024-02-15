@@ -44,40 +44,6 @@ public class Project_Reuest_cls
 
     }
 
-
-    public static void workAcc(List<Project_and_user_association__c> ProjectData)
-    {
-        Map<Id,Project_and_user_association__c> project_ids = new Map<Id,Project_and_user_association__c>();
-        for(Project_and_user_association__c data : ProjectData)
-        {
-            project_ids.put(data.Project__c, data);
-        }
-
-        List<Work_Orders__c> workorderData = [select id from Work_Orders__c WHERE Project__c=:project_ids.keyset()];
-       
-        List<Work_Orders__Share> insertWorkData = new List<Work_Orders__Share>();
-
-        for (Project_and_user_association__c variable : ProjectData) 
-        {
-            for (Work_Orders__c orderdata : workorderData) 
-            {
-                    Work_Orders__Share Data = new Work_Orders__Share();
-                    Data.ParentId = orderdata.Id;
-                    Data.UserOrGroupId = variable.User__c;
-                    Data.AccessLevel = variable.Status__c;
-                    Data.RowCause = Schema.Work_Orders__Share.RowCause.Manual;
-                    insertWorkData.add(Data);
-            }    
-        }
-
-        insert insertWorkData;
-        
-    }
-
-
-
-    
-
     public static List<Project__Share> returnData(List<Project_and_user_association__c> updateData)
     {
         Map<id,id> shareData =new Map<id, id>();
@@ -130,27 +96,76 @@ public class Project_Reuest_cls
         Delete Dataupdate;
     }
 
-    
-    public static void maxString()
+
+    public static List<Work_orders__c> findworkorderData(List<Project_and_user_association__c> ProjectData)
     {
-        List<String> minmax = new List<String>{'helloworld', 'welcome', 'way', 'enter','maximumnumber', 'asusvivobookflip'};
-        String maxString = minmax[0];
-        String minString = minmax[0];
-        for (String str : minmax) {
-			if(str.length() > maxString.length())
-            {
-                maxString = str;
-            }
-            
-            if(str.length() < minString.length())
-            {
-                minString = str;
-			}
+        Map<Id,Project_and_user_association__c> project_ids = new Map<Id,Project_and_user_association__c>();
+        for(Project_and_user_association__c data : ProjectData)
+        {
+            project_ids.put(data.Project__c, data);
         }
+
+        List<Work_Orders__c> workorderData = [select id from Work_Orders__c WHERE Project__c=:project_ids.keyset()];
+
+        return workorderData;
+    }
+
+
+    public static void workAcc(List<Project_and_user_association__c> ProjectData)
+    {
+
+       
+        List<Work_Orders__Share> insertWorkData = new List<Work_Orders__Share>();
+
+        for (Project_and_user_association__c variable : ProjectData)    
+        {
+            for (Work_Orders__c orderdata : findworkorderData(ProjectData)) 
+            {
+                    Work_Orders__Share Data = new Work_Orders__Share();
+                    Data.ParentId = orderdata.Id;
+                    Data.UserOrGroupId = variable.User__c;
+                    Data.AccessLevel = variable.Status__c;
+                    Data.RowCause = Schema.Work_Orders__Share.RowCause.Manual;
+                    insertWorkData.add(Data);
+            }    
+        }
+
+        insert insertWorkData;
         
-        System.debug('Maximum String: ' + maxString +' : '+ maxString.length());
-        System.debug('Minimum String: ' + minString+' : '+minString.length());
+    }
+
+
+    public static List<Work_Orders__share> retvalue(List<Project_and_user_association__c>ProjectData)
+    {
+        Map<id, work_orders__c> shareData =new Map<id, work_orders__c>();
         
+        for(work_orders__c retData : findworkorderData(ProjectData)) 
+        {
+            shareData.put(retData.Id,retData);
+        }
+
+        List<Work_Orders__share> share_Data = [SELECT AccessLevel, Id, ParentId FROM work_Orders__share WHERE ParentId =:shareData.keyset()]; 
+        return share_Data;
+    }
+    
+
+    public static void workAccUpdate(List<Project_and_user_association__c>ProjectData)
+    {
+
+        List<Work_Orders__share> workupdate = new list<Work_Orders__share>();
+
+        for (Work_Orders__share variable : retvalue(ProjectData)) 
+        {
+            for(Project_and_user_association__c userasValue : ProjectData)
+            {
+                Work_Orders__Share Data = new Work_Orders__Share();
+                Data.Id = variable.Id;
+                Data.AccessLevel = userasValue.Status__c;
+                workupdate.add(Data);
+            }    
+        }
+
+        Update workupdate;
     }
 
 
