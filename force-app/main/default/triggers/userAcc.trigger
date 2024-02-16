@@ -15,6 +15,7 @@ trigger userAcc on Project_and_user_association__c (before insert, After insert,
     if(Trigger.isBefore && Trigger.isDelete)
     {
         Project_Reuest_cls.accDelete(Trigger.old);
+        Project_Reuest_cls.workorderDelete(Trigger.old);
     }
 
 }

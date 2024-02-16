@@ -23,6 +23,29 @@ public class Project_Reuest_cls
         Messaging.sendEmail(mailsent); // Mail sent statement
     }
 
+
+    public static void invoicemain(List<invoice__c> invoiceData)
+    {
+        Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
+        projectsendmail__c email_data = projectsendmail__c.getInstance(); // Get Sales Admin email from custome settings.
+        id conid = [SELECT Id, Email, MailingCity, LastName FROM Contact WHERE LastName = 'ceo'].Id;
+        EmailTemplate email_id = [SELECT Id, Subject, Body FROM EmailTemplate WHERE Name = 'project']; // Get email Template Id.
+        List<Messaging.SingleEmailMessage> mailsent = new List<Messaging.SingleEmailMessage>(); // Store the Mail.
+        
+        for (invoice__c Project_Data : invoiceData) // Asign the new data in for loop 
+        {    
+             mail.setTemplateId(email_id.Id); // Email Templeat Id.
+             mail.setToAddresses(new String[]{email_data.Email__c}); // To address -- Sales Admin email.
+             mail.setTargetObjectId(conid); // Id of the contact, lead.
+             mail.setWhatId(Project_Data.id); // Id of the record. 
+             mail.setSaveAsActivity(false); //
+             mail.setUseSignature(false); //
+        	 mailsent.add(mail); // Add the mail to List..              
+        } 
+        Messaging.sendEmail(mailsent); // Mail sent statement
+        
+    }
+
     public static void accessRule(List<Project_and_user_association__c> projectUserData) // this method for user access for project........
     {
         List<Project__share> shareRecords = new List<Project__share>(); // store the sharing access users ...
@@ -144,7 +167,8 @@ public class Project_Reuest_cls
             shareData.put(retData.Id,retData);
         }
 
-        List<Work_Orders__share> share_Data = [SELECT AccessLevel, Id, ParentId FROM work_Orders__share WHERE ParentId =:shareData.keyset()]; 
+        List<Work_Orders__share> share_Data = [SELECT AccessLevel,userorGroupid, Id FROM work_Orders__share WHERE ParentId =:shareData.keyset()];
+        System.debug('work fine');
         return share_Data;
     }
     
@@ -158,15 +182,43 @@ public class Project_Reuest_cls
         {
             for(Project_and_user_association__c userasValue : ProjectData)
             {
-                Work_Orders__Share Data = new Work_Orders__Share();
-                Data.Id = variable.Id;
-                Data.AccessLevel = userasValue.Status__c;
-                workupdate.add(Data);
+                if(variable.userorGroupid == userasValue.User__c)
+                {
+                    Work_Orders__Share Data = new Work_Orders__Share();
+                    Data.Id = variable.Id;
+                    Data.AccessLevel = userasValue.Status__c;
+                    workupdate.add(Data);
+                }
             }    
         }
 
         Update workupdate;
     }
+
+
+    public static void workorderDelete(List<Project_and_user_association__c>ProjectData)
+    {
+
+        List<Work_Orders__share> workupdate = new list<Work_Orders__share>();
+
+        for (Work_Orders__share variable : retvalue(ProjectData)) 
+        {
+            for(Project_and_user_association__c userasValue : ProjectData)
+            {
+                if(variable.userorGroupid == userasValue.User__c)
+                {
+                    Work_Orders__Share Data = new Work_Orders__Share();
+                    Data.Id = variable.Id;
+                    workupdate.add(Data);
+                }
+            }    
+        }
+
+        Delete workupdate;
+    }
+
+
+
 
 
 }
