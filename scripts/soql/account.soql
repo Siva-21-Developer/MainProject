@@ -3,5 +3,5 @@
 //     query text and running the command:
 //     SFDX: Execute SOQL Query with Currently Selected Text
 
-SELECT AccessLevel, Id, IsDeleted, LastModifiedById, LastModifiedDate, ParentId, RowCause, UserOrGroupId
-  FROM Work_Orders__Share
+SELECT Id
+  FROM User
