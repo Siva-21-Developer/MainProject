@@ -27,7 +27,7 @@ public class con_user_datachange implements Database.Batchable<sObject>
                 {
                     for(User usersid : userdata)
                     {
-                        if (usersid.ContactId == cons.Id) 
+                        if (usersid.ContactId == cons.Id && con.Old_Phone_Number__c == cons.phone) 
                         {
                             user usersdata = new user();
                             usersdata.Id = usersid.Id;
@@ -43,10 +43,9 @@ public class con_user_datachange implements Database.Batchable<sObject>
                         }
                     }
                 } 
-        }
+            }
         update conList;
         update userList;
-        
     }
     
     public void Finish(Database.BatchableContext bc)
