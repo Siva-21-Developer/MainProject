@@ -7,8 +7,7 @@ public class Project_Reuest_cls
         projectsendmail__c email_data = projectsendmail__c.getInstance(); // Get Sales Admin email from custome settings.
         EmailTemplate email_id = [SELECT Id, Subject, Body FROM EmailTemplate WHERE Name = 'project']; // Get email Template Id.
         List<Messaging.SingleEmailMessage> mailsent = new List<Messaging.SingleEmailMessage>(); // Store the Mail.
-        
-        
+                
         for (Project_Request__c Project_Data : ProjectRequest) // Asign the new data in for loop 
         {
              mail.setTemplateId(email_id.Id); // Email Templeat Id.
