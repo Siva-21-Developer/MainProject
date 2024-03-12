@@ -11,7 +11,7 @@ public class Project_Reuest_cls
         for (Project_Request__c Project_Data : ProjectRequest) // Asign the new data in for loop 
         {
              mail.setTemplateId(email_id.Id); // Email Templeat Id.
-             mail.setToAddresses(new String[]{email_data.Email__c}); // To address -- Sales Admin email.
+             mail.setToAddresses(new String[]{'siva2122001+1@gmail.com'}); // To address -- Sales Admin email.
              mail.setTargetObjectId(Project_Data.Client__c); // Id of the contact, lead.
              mail.setWhatId(Project_Data.id); // Id of the record. 
              mail.setSaveAsActivity(false); //

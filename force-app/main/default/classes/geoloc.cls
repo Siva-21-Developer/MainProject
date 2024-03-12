@@ -2,10 +2,12 @@ public class geoloc
 {
     public static void mailsent()
     {
-        Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
-        mail.setToAddresses(new String[]{'siva2122001@gamil.com'});
-        mail.setSubject('welcome world');
-        mail.setPlainTextBody('welcome to the hello world');
-        Messaging.sendEmail(new Messaging.SingleEmailMessage[]{mail});
+        List<Messaging.SingleEmailMessage> emailList = new List<Messaging.SingleEmailMessage>();
+        String[] toAddress = new String[]{'siva.s.n.1821@gmail.com'};
+        Messaging.SingleEmailMessage myEmail = new Messaging.SingleEmailMessage();
+        myEmail.setToAddresses(toAddress);
+        myEmail.setSubject('subject');    
+        emailList.add(myEmail);
+        Messaging.sendEmail(emailList); 
     }
 }
