@@ -1,2 +1,3 @@
-SELECT ContactId, LastName
-  FROM User
+SELECT COUNT()
+  FROM Account
+  WHERE RecordTypeId = '012F9000000VDjJIAW'

@@ -1,0 +1,53 @@
+
+.image-block{
+    position: relative;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    perspective: 1px;
+    transform-style: preserve-3d;
+    z-index: 1;
+}
+.image-container
+{
+    position: relative;
+    height:100%;
+    width: 600px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    flex-wrap: nowrap;
+    border-radius: 20px;
+ }
+
+
+.image
+{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+    height: 300px;
+    overflow: hidden;
+    border-radius: 20px;
+    background: white;
+    margin: 20px;
+    box-shadow: inset 8px 11px 48px -5px rgba(0,0,0,0.75);
+}
+
+div h1
+{
+    color: tomato;
+    font-size: 100px;
+    font-weight: 900;
+    font-family: "AudioWide", sans-serif;
+}
+div h3
+{
+    position: absolute;
+    bottom: 40px;
+    font-weight: 400;
+    font-size: 20px;
+}

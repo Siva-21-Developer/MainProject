@@ -11,5 +11,7 @@ trigger project_request_trig on Project_Request__c (After insert)
     }
 
     if(Trigger.isBefore && Trigger.isDelete)
-    {}
+    {
+        
+    }
 }
