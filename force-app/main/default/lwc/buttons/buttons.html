@@ -1,0 +1,11 @@
+<template>
+    <lightning-card >
+        <lightning-button variant="base" label="Show" title="Looks like a link" onclick={handleClick} class="slds-m-left_x-small"></lightning-button>
+        
+        <lightning-card  title="Show Banner" if:true={isvalues}>
+            <lightning-button label="New" slot="actions"></lightning-button>
+            <p class="slds-p-horizontal_small">Card Body (custom component)</p>
+            <p slot="footer">Card Footer</p>
+        </lightning-card>
+    </lightning-card>
+</template>

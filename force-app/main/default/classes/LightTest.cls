@@ -26,4 +26,15 @@ public with sharing class LightTest {
     public static Integer ClientCount() {
         return [SELECT COUNT() FROM Account WHERE RecordTypeId = '012F9000000VDjJIAW'];
     }
+
+    @AuraEnabled(cacheable=true)
+    public static List<Account> AccountAddress(){
+        try {
+            return [SELECT BillingCountry, BillingState, BillingStreet, BillingCity, BillingPostalCode, BillingAddress, Name
+            FROM Account
+            WHERE RecordTypeId = '012F9000000VDjJIAW'];
+        } catch (Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
+    }
 }
