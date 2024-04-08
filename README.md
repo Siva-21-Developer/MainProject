@@ -1,18 +1,3 @@
-# Salesforce DX Project: Next Steps
-
-Now that you’ve created a Salesforce DX project, what’s next? Here are some documentation resources to get you started.
-
-## How Do You Plan to Deploy Your Changes?
-
-Do you want to deploy a set of changes, or create a self-contained application? Choose a [development model](https://developer.salesforce.com/tools/vscode/en/user-guide/development-models).
-
-## Configure Your Salesforce DX Project
-
-The `sfdx-project.json` file contains useful configuration information for your project. See [Salesforce DX Project Configuration](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_ws_config.htm) in the _Salesforce DX Developer Guide_ for details about this file.
-
-## Read All About It
-
-- [Salesforce Extensions Documentation](https://developer.salesforce.com/tools/vscode/)
-- [Salesforce CLI Setup Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_intro.htm)
-- [Salesforce DX Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_intro.htm)
-- [Salesforce CLI Command Reference](https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference.htm)
+Overview
+The Fin App project aims to enhance and simplify the procurement and invoicing processes for businesses. This comprehensive solution will integrate seamlessly to enable efficient work order creation, purchase order management, and invoice generation. Under the leadership of Project Manager & Lead and Sales admin our multidisciplinary team will leverage advanced technologies to develop a user-friendly platform.
+This application helps us to configure the Super Admin will maintain the overall user roles and overview of the work orders, purchase order and invoices, Project Manager & Lead will handle the project and work orders, sales admin will overview and maintain the work orders, purchase orders and invoices. Finance admin overview and approve the work order, purchase order and invoice.
